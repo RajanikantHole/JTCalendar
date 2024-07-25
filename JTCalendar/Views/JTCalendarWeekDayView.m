@@ -60,6 +60,7 @@
     
     NSDateFormatter *dateFormatter = [_manager.dateHelper createDateFormatter];
     NSMutableArray *days = nil;
+    NSMutableArray *daysForAccessibility = nil;
     
     dateFormatter.timeZone = _manager.dateHelper.calendar.timeZone;
     dateFormatter.locale = _manager.dateHelper.calendar.locale;
@@ -67,12 +68,15 @@
     switch(_manager.settings.weekDayFormat) {
         case JTCalendarWeekDayFormatSingle:
             days = [[dateFormatter veryShortStandaloneWeekdaySymbols] mutableCopy];
+            daysForAccessibility = [[dateFormatter standaloneWeekdaySymbols] mutableCopy];
             break;
         case JTCalendarWeekDayFormatShort:
             days = [[dateFormatter shortStandaloneWeekdaySymbols] mutableCopy];
+            daysForAccessibility = [[dateFormatter standaloneWeekdaySymbols] mutableCopy];
             break;
         case JTCalendarWeekDayFormatFull:
             days = [[dateFormatter standaloneWeekdaySymbols] mutableCopy];
+            daysForAccessibility = [[dateFormatter standaloneWeekdaySymbols] mutableCopy];
             break;
     }
     
@@ -90,12 +94,17 @@
             id day = [days firstObject];
             [days removeObjectAtIndex:0];
             [days addObject:day];
+            
+            id dayAccessibility = [daysForAccessibility firstObject];
+            [daysForAccessibility removeObjectAtIndex:0];
+            [daysForAccessibility addObject:dayAccessibility];
         }
     }
     
     for(int i = 0; i < NUMBER_OF_DAY_BY_WEEK; ++i){
         UILabel *label =  _dayViews[i];
         label.text = days[i];
+        label.accessibilityLabel = daysForAccessibility[i];
     }
 }
 
